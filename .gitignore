@@ -1,0 +1,57 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+local.properties
+secrets.properties
+keystore.properties
+credentials.json
+*.jks
+*.keystore
+*.pem
+*.p12
+
+# Android / Gradle
+.gradle/
+.kotlin/
+.cxx/
+.externalNativeBuild/
+**/build/
+*.apk
+*.aab
+*.ap_
+*.hprof
+captures/
+
+# Editors and operating systems
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Python backend
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+
+# Model weights and generated media
+models/
+model-weights/
+voice-cache/
+audio-cache/
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Runtime files
+*.log
+tmp/
