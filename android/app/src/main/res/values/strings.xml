@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Driving Companion</string>
+    <string name="service_channel">Driving session</string>
+</resources>
