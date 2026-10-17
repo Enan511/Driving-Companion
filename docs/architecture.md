@@ -36,12 +36,14 @@ Persist selected-car identity and enough state for lifecycle reconciliation. A r
 
 Suggested session states: NOT_CONFIGURED, CAR_DISCONNECTED, CAR_CONNECTING, DRIVE_STARTING, DRIVE_ACTIVE, TEMPORARILY_DISCONNECTED, DRIVE_ENDING. Avoid duplicate services, greetings, location subscriptions, and session-end timers.
 
+Separate the active driving period from its persistent history grouping. A short grace reconnect stays in the same period. After grace expiry, resuming a history record adds a new connected period and preserves the disconnected gap. History-selection state does not itself authorize Bluetooth/service startup. See [the detailed session design](bluetooth-session-design.md).
+
 ## Implementation order
 
 | Increment | Real result | Required dependencies |
 | --- | --- | --- |
-| F1: car/session core | Select a real paired car; observe supported automatic session start, grace/reconnect, and end in a minimal useful native UI | Project toolchain; Android Bluetooth/companion permissions; Pixel 8/car |
-| F2: audible welcome | Speak one local-time greeting through car audio; priority queue and local TTS | F1; audio focus and routing |
+| F1: car/session core | Real car selection, automatic activation, grace/reconnect/end, visibility-aware disconnect countdown, local history, and app/notification Resume/New choices | Project toolchain; Android Bluetooth/companion/notification permissions; storage; Pixel 8/car |
+| F2: audible welcome and optional session commands | Local-time greeting, priority queue, local TTS; optional bounded voice Resume/New with explicit fallback | F1; audio focus/routing; separately verified speech recognizer and microphone eligibility |
 | F3: saved destinations | Real search, map choice, persisted place/radius/messages, Waze departure | Storage; selected map/search services; F2 for speech |
 | F4: arrivals | Validated arrival announcement with anti-repeat state | F1 session gating; F2 speech; F3 coordinates; location/geofences |
 | F5: speed awareness | Quality-controlled GPS speed, matched road limit, deterministic escalating warnings | F1; F2; location; licensed/accessible road provider |

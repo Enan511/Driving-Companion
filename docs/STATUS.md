@@ -8,6 +8,7 @@ Updated: 17 October 2026.
 - Scope: project-local native-development preparation, requirements, and reproducible another-PC handoff.
 - No application code, backend code, empty app module, APK, or feature tests exist yet.
 - Preparation is locally verified. The next implementation is F1 below; there is no separate empty-app milestone.
+- Requirements now include visibility-aware disconnect countdowns, persistent local session history, and selectable app/voice Resume/New interactions. See `docs/bluetooth-session-design.md`. These are design additions only; the ignored-prompt default is explicitly proposed, not user-confirmed.
 
 ## Requirements progress
 
@@ -19,7 +20,8 @@ Updated: 17 October 2026.
 | Android SDK and native development commands | Installed; doctor verified in PowerShell 7 and Windows PowerShell 5.1 |
 | Gradle / Android and Kotlin plugin resolution | `check` passed with project JDK/SDK |
 | GitHub toolchain workflow | Passed on a fresh Windows runner for tooling commit `478a82b` |
-| CAR-01 through CAR-05 (first functional increment) | Not started |
+| CAR-01 through CAR-07 and local session history (first functional increment) | Not started |
+| Optional voice Resume/New commands | Specified; speech-recognition/background eligibility not verified |
 | Greetings, places, Waze, arrivals, speed, Qwen | Not started |
 | Pixel 8 / car verification | Not performed |
 
@@ -37,7 +39,7 @@ The system's original Java configuration was not changed. The SDK manager's newe
 
 ## Next action after preparation
 
-Read requirements and architecture, then create a feature branch for F1 selected-car Bluetooth/session management. Implement the pure session state machine with meaningful tests, then the Android adapter and a minimal useful vehicle/session UI in the first actual app module. Verify permissions and supported presence/background mechanisms against the real Pixel 8 OS and car. Do not start with a blank-app milestone.
+Read requirements, architecture, and the Bluetooth/session design, then create a feature branch for F1. Implement and test session identity, one grace deadline, expiry/reconnect races, and persistent history/connected-period rules. Add the Android adapter, car selection, visibility-aware countdown, and app/notification history choices in the first actual app module. Verify permissions and supported presence/background mechanisms against the real Pixel 8 OS and car. Optional voice choice comes with F2 after speech recognition is verified. Do not start with a blank-app milestone.
 
 ## External dependencies still open
 

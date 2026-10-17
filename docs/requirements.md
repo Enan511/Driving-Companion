@@ -18,7 +18,13 @@ Authoritative project baseline, consolidated from the supplied 12 October 2026 h
 | CAR-03 | End after approximately 20 seconds of disconnection; cancel ending on reconnect | Timing/state tests plus real reconnect/disconnect tests; no duplicate sessions |
 | CAR-04 | No normal Start Drive button; manual triggers live only in diagnostics | UI inspection and automation tests |
 | CAR-05 | Handle permissions, companion association, foreground-service restrictions, process lifecycle, and force-stop limitations honestly | OS-specific implementation review and device evidence; no universal wake-up claim |
-| GREET-01 | One greeting per genuine session; local morning 04:00-11:59, afternoon 12:00-16:59, evening 17:00-21:59, night 22:00-03:59 | Boundary-time tests and reconnect tests |
+| CAR-06 | During disconnect grace, show an in-app warning/countdown only while the app is focused; otherwise show the warning/countdown in the notification panel without bringing the app forward | Foreground/background/screen-lock tests; warning follows visibility changes without a new deadline |
+| CAR-07 | Dismiss the disconnect warning on reconnect or grace expiry; a dismissed warning does not cancel the deadline; clear expired UI after process recreation | Reconnect/expiry/visibility/process-recreation tests using one authoritative deadline |
+| HIST-01 | Persist local session history so a previous session can be selected and resumed, or a new session chosen | Database/restart tests; history survives process death and normal app restarts |
+| HIST-02 | Reconnection during grace continues the same driving period automatically; a later verified car connection can start a new period attached to a previous or new history record | Grace versus post-expiry tests; stopped time is a gap rather than driving duration |
+| HIST-03 | User chooses app-popup or voice interaction for Resume/New; background popup mode uses notification controls and never forces the app onscreen | Settings/presentation tests; voice permission/unavailable recognition falls back visibly |
+| HIST-04 | Resuming history restores relevant saved context only; fresh connection/location/road data is required, and stopped services are not resurrected while the car remains disconnected | Stale-context and disconnected-resume tests |
+| GREET-01 | One greeting per genuinely started driving period, including a new period attached to resumed history; no duplicate on a grace reconnect; local morning 04:00-11:59, afternoon 12:00-16:59, evening 17:00-21:59, night 22:00-03:59 | Boundary-time, resume, and reconnect tests |
 | GREET-02 | Multiple variations; avoid recent repetition; settings and cached speech | Deterministic selection tests and audible device verification |
 | PLACE-01 | Add/edit/delete/enable at least 20 places, each with name, address, coordinates, radius, departure/arrival messages, timestamps | Persistence and UI tests with multiple places |
 | PLACE-02 | Real in-app search for venues/addresses; current location; interactive map selection; marker, visible radius, confirm action | Real provider results and saved selected coordinates; no WebView workaround |
@@ -40,6 +46,7 @@ Authoritative project baseline, consolidated from the supplied 12 October 2026 h
 | VOICE-03 | Deterministic cache keys include normalized text, profile, style, model/version; bounded storage and cleanup | Cache hit/invalidation/eviction tests |
 | VOICE-04 | One announcement at a time; priority: warning 4, 3, 2, arrival, departure, greeting, warning 1 | Queue/preemption tests |
 | VOICE-05 | Respect calls and navigation; audio focus/ducking; car playback while music/Waze is active | Real device/car tests with music, Waze speech, incoming call, audio interruption |
+| VOICE-06 | Optional bounded Resume/New voice commands; use a separate supported speech-recognition path, microphone permission, timeout, and app/notification fallback; no assumption of unrestricted background listening | Real voice selection plus denied permission, OS restriction, no-response, and recognition-failure tests |
 | UI-01 | Only Home, Places, Speed, Settings as primary screens; dark restrained design, one accent, large targets, accessible contrast | Pixel 8 UI review; no avatar, clutter, or decorative dashboard |
 | UI-02 | Configuration while parked; home shows vehicle/session, speed/limit, status, last announcement; technical detail in diagnostics | UI and interaction review |
 | DATA-01 | Room for structured place data; DataStore for settings where justified; modular, event-driven design | Persistence tests and architecture review |
@@ -60,6 +67,14 @@ No food ordering, news, weather, conversational memory, job diaries, spending da
 - Confirm road-limit provider access, geographic coverage, licensing, pricing, and measured matching quality. Mapbox, Google Roads, and OSM are candidates, not completed integrations.
 - Verify the second PC's CPU/GPU/RAM before choosing Qwen deployment; secure the reachable driving-time endpoint.
 - Confirm the second GitHub account if collaborator access is needed. It has not been supplied or invited.
+- Verify a permitted speech-recognition interaction for voice session selection. Qwen3-TTS generates speech; it is not the command recognizer.
+
+## Session-design proposals awaiting confirmation
+
+- Keep automatic driving activation independent of Resume/New history selection. Proposed default: begin a new history record on a later connection and retain it if the choice is ignored; choosing Resume attaches the new connected period to the chosen prior record without restarting the service or replaying greetings. This default is a design proposal, not an explicit user selection.
+- Put session history under Home as a secondary screen, preserving the four main tabs. Store history on the phone; development Git handoffs do not synchronize private driving history.
+
+See [Bluetooth/session interaction design](bluetooth-session-design.md) for the updated diagrams and presentation rules. No feature has been implemented by this requirements update.
 
 ## Completion rules
 
