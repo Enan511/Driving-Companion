@@ -5,7 +5,7 @@ Read `docs/STATUS.md`, `docs/requirements.md`, and `docs/development.md` before 
 ## Implementation approach
 
 - Build real features incrementally, starting with selected-car Bluetooth activation and driving-session management. Do not introduce a blank demo app, dummy dashboard, placeholder toggles, or unrelated features as a milestone.
-- The current preparation has no app module or app source. Add the first installable app with the first functional feature.
+- Phase 1 now has a real app module and a pure Kotlin session module. Extend functional increments; do not add placeholder screens or pretend unimplemented voice/location features work.
 - Separate pure driving-session decisions from Android lifecycle, Bluetooth, storage, UI, and audio adapters.
 - Start with only the modules justified by implemented code. See `docs/architecture.md`.
 - Use the checked-in Gradle wrapper through `scripts/gradle.ps1` and the project-local SDK/JDK. Never silently use the system Java 8 or JDK 25.

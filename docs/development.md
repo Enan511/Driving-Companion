@@ -9,7 +9,7 @@ If Windows blocks local scripts with an execution-policy error, open a process-o
 ```powershell
 .\scripts\bootstrap.ps1 -AcceptAndroidLicenses
 .\scripts\doctor.ps1
-.\scripts\gradle.ps1 check
+.\scripts\gradle.ps1 :check
 ```
 
 The explicit license switch accepts the necessary Android SDK licenses for this local installation. Without it, bootstrap preserves existing license choices and SDK installation may prompt for acceptance. Review [Android SDK terms](https://developer.android.com/studio/terms) when needed.
@@ -29,7 +29,7 @@ The wrapper's Gradle version and distribution SHA-256 are committed. There is no
 
 ## What can be verified now
 
-`doctor.ps1` checks tools, SDK files, wrapper checksum configuration, and PowerShell syntax. `gradle.ps1 check` resolves the pinned Android/Kotlin build plugins and verifies JDK/SDK prerequisites. It does not compile application code or pass feature tests: none exist yet.
+`doctor.ps1` checks tools, SDK files, wrapper checksum configuration, and PowerShell syntax. `gradle.ps1 :check` selects the repository verification task: toolchain checks, pure session tests, debug JVM Android integration tests, and Android lint. The leading colon avoids selecting every child project's broader all-variant `check` task. Add `:app:assembleDebug :app:assembleDebugAndroidTest` to produce the app and native UI-test APKs. The JVM Android tests use Robolectric/API 35; they are not physical-device or emulator evidence.
 
 Android Studio is optional for command-line development. If installed separately, open `android/`, use the project JDK shown by `. scripts/env.ps1; $env:JAVA_HOME` as Gradle JDK, and use the SDK at `$env:ANDROID_HOME`. Do not invoke an empty-app wizard. An emulator/system image is not installed by this bootstrap; use a physical phone initially, and add an emulator deliberately when needed.
 
@@ -41,7 +41,7 @@ On the Pixel 8, enable Developer options and USB debugging, connect a data-capab
 .\scripts\native.ps1 Devices
 ```
 
-No app is installed by preparation. Once F1 exists, choose the device's actual serial from that command:
+No app is installed by environment preparation. Choose the device's actual serial from that command:
 
 ```powershell
 .\scripts\native.ps1 Install -Serial YOUR_DEVICE_SERIAL
@@ -49,7 +49,7 @@ No app is installed by preparation. Once F1 exists, choose the device's actual s
 .\scripts\native.ps1 Logs -Serial YOUR_DEVICE_SERIAL
 ```
 
-Install builds `:app:assembleDebug` and installs only on the explicitly selected device. Test runs `:app:connectedDebugAndroidTest`; Logs filters the planned `DrivingCompanion` tag. Unit tests will run separately through `scripts/gradle.ps1 :core:drive:test` when the core module exists. The install/test scripts deliberately fail before the real app exists, rather than supplying a dummy APK. Debug signing keys may differ by PC; if Android rejects an update signed by the other PC, use an agreed private development signing setup outside Git or explicitly manage the existing installation without silently deleting its data.
+Install builds `:app:assembleDebug` and installs only on the explicitly selected device. Test runs `:app:connectedDebugAndroidTest`; Logs filters the reserved `DrivingCompanion` tag (sensitive event logging is not enabled). Session unit tests can run separately through `scripts/gradle.ps1 :core:drive:test`. See `docs/testing-phase1.md` for actual car/background acceptance. Debug signing keys may differ by PC; if Android rejects an update signed by the other PC, use an agreed private development signing setup outside Git or explicitly manage the existing installation without silently deleting its data.
 
 Keep device identifiers, coordinates, routes, car addresses, and raw logs local. Put sanitized outcomes in `docs/STATUS.md`.
 

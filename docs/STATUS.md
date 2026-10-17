@@ -4,23 +4,24 @@ Updated: 17 October 2026.
 
 ## Active checkpoint
 
-- Active branch: `chore/core-development-prep`.
-- Scope: project-local native-development preparation, requirements, and reproducible another-PC handoff.
-- No application code, backend code, empty app module, APK, or feature tests exist yet.
-- Preparation is locally verified. The next implementation is F1 below; there is no separate empty-app milestone.
-- Requirements now include visibility-aware disconnect countdowns, persistent local session history, and selectable app/voice Resume/New interactions. See `docs/bluetooth-session-design.md`. These are design additions only; the ignored-prompt default is explicitly proposed, not user-confirmed.
+- Active branch: `feature/bluetooth-sessions`.
+- Scope: F1 selected-car Bluetooth sessions, native disconnect countdowns, and persistent resumable history.
+- Real `app` and pure Kotlin `core/drive` modules exist; there is no dummy dashboard or Start Drive button.
+- App and native UI-test APKs build. Local verification passed: 22 core tests, 9 JVM Android tests, and zero Android lint issues. Pixel 8/car acceptance remains pending.
+- Voice commands, greetings, GPS/location, places, Waze, speed warnings, and backend implementation remain later phases.
+- Automatic new-history creation while a Resume choice is pending implements the proposed non-blocking default. A consumed/expired choice cannot reassign another driving period.
 
 ## Requirements progress
 
 | Area | State |
 | --- | --- |
 | Public GitHub repository | Created and connected |
-| Requirements and functional implementation order | Documented |
+| Requirements and functional implementation order | Documented; F1 implemented in source |
 | Project-local JDK / Gradle | Downloaded and checksum-verified |
 | Android SDK and native development commands | Installed; doctor verified in PowerShell 7 and Windows PowerShell 5.1 |
 | Gradle / Android and Kotlin plugin resolution | `check` passed with project JDK/SDK |
-| GitHub toolchain workflow | Passed on a fresh Windows runner for tooling commit `478a82b` |
-| CAR-01 through CAR-07 and local session history (first functional increment) | Not started |
+| GitHub workflow | Tooling baseline passed; updated app verification will run after feature push |
+| CAR-01 through CAR-07 and local session history | Implemented; JVM verification and APK builds; Pixel 8/car acceptance pending |
 | Optional voice Resume/New commands | Specified; speech-recognition/background eligibility not verified |
 | Greetings, places, Waze, arrivals, speed, Qwen | Not started |
 | Pixel 8 / car verification | Not performed |
@@ -33,13 +34,25 @@ Updated: 17 October 2026.
 - `scripts/native.ps1 Devices`: ADB ran; no connected phone or emulator was listed.
 - Specialist review inspected actual scripts/configuration/handoff. Unicode SDK paths and Windows execution-policy setup findings were corrected; focused re-review found no remaining actionable blocker.
 - [Fresh Windows GitHub Actions run](https://github.com/Enan511/Driving-Companion/actions/runs/39066633312): bootstrap, doctor, wrapper validation, and Gradle check all passed in a clean checkout. This demonstrates fresh-machine setup, not phone or application functionality.
-- No application or backend was implemented, built, installed, or device-tested.
+- The above tooling-only run predates Phase 1 and is not evidence for the app.
+
+## Phase 1 implementation and review
+
+- Selected-car storage and exact-address association; public API 36 Bluetooth presence events with API 31-35 compatibility adapters. BLE proximity is not connection evidence.
+- Single serialized session owner, monotonic 20-second deadline, focused popup/background chronometer, expiry connection confirmation, and grace-only bounded wake lock.
+- Local Room checkpoint/history, disconnected-gap exclusion, prepared history, latest-driven Resume previous ordering, one-time choice tokens, and original history preserved on New.
+- Fresh evidence before active-state display; conservative unseen-gap recovery; unexpected service teardown freezes connection intervals. Failed startup and permission denial expose repair states.
+- Three specialist passes inspected actual core rules, Android lifecycle/integration, and UI/performance. Reported defects were corrected rather than only noted.
+- Final verification command: `scripts/gradle.ps1 :check :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon` passed. JUnit XML reports 31 total tests, zero failures/errors/skips; lint XML reports zero errors/warnings.
+- `apksigner verify --verbose` passed (APK signature scheme v2); `aapt dump badging` verifies application identity, launcher, minimum API 31 and target API 36. This is packaging verification, not an install test.
+- Six native Compose tests are compiled into the UI-test APK; no emulator/Pixel 8 execution has been performed.
+- APKs, private history, device IDs, signing keys, tools, and caches remain outside Git.
 
 The system's original Java configuration was not changed. The SDK manager's newer-XML warning is documented in `docs/environment.md`; required SDK files and plugin configuration were verified successfully. ADB/Java processes required elevated tool execution in the Codex sandbox; ordinary Windows shell checks also passed outside that sandbox.
 
-## Next action after preparation
+## Next action
 
-Read requirements, architecture, and the Bluetooth/session design, then create a feature branch for F1. Implement and test session identity, one grace deadline, expiry/reconnect races, and persistent history/connected-period rules. Add the Android adapter, car selection, visibility-aware countdown, and app/notification history choices in the first actual app module. Verify permissions and supported presence/background mechanisms against the real Pixel 8 OS and car. Optional voice choice comes with F2 after speech recognition is verified. Do not start with a blank-app milestone.
+Connect the Pixel 8, install the debug APK, run native UI tests and the parked-car checklist in `docs/testing-phase1.md`. Record actual OS/car results and fix any native lifecycle defect before declaring F1 complete. Optional voice selection comes with F2 after speech recognition is verified. Do not start unrelated phases while critical F1 acceptance remains unresolved.
 
 ## External dependencies still open
 

@@ -4,7 +4,7 @@ Driving Companion (working app name: **Jarvis Drive**) is a planned native Andro
 
 ## Project status
 
-The project-local Android development toolchain is prepared and verified. No Android application, backend, or app features have been implemented. No APK has been built, installed, or tested.
+Phase 1 implements selected-car Bluetooth sessions, disconnect countdowns, and local resumable session history. The native app and its UI-test APK build from the project-local toolchain. JVM tests cover the session engine, Room persistence, notifications, and manifest protections. Physical Pixel 8/car verification is still required; background reliability is not claimed from compilation alone.
 
 The project starts from scratch; previous APKs and prototype source are excluded.
 
@@ -39,17 +39,28 @@ This repository is public. Never commit credentials, private configuration, sign
 
 Start with [the handoff status](docs/STATUS.md), [requirements](docs/requirements.md), [architecture and feature order](docs/architecture.md), and [development setup](docs/development.md).
 
-The first implementation is selected-car Bluetooth activation and driving-session management. The first installable app must contain that functional increment; there is no separate blank-app milestone.
+The app currently contains working vehicle/session/history functionality. Greetings, voice commands, places, Waze, GPS monitoring, speed warnings, and Qwen remain future increments; no placeholder tabs or settings represent them as implemented.
 
 ## Project-local Windows setup
 
 ```powershell
 .\scripts\bootstrap.ps1 -AcceptAndroidLicenses
 .\scripts\doctor.ps1
-.\scripts\gradle.ps1 check
+.\scripts\gradle.ps1 :check
 .\scripts\native.ps1 Devices
 ```
 
-Tools and machine-specific caches are downloaded into ignored `.tools/` and `.local/` directories. Another PC clones the same branch and repeats setup, then continues from STATUS. Bootstrap currently supports Windows x64. `check` verifies build prerequisites; it is not an application build or feature test.
+Tools and machine-specific caches are downloaded into ignored `.tools/` and `.local/` directories. Another PC clones the same branch and repeats setup, then continues from STATUS. Bootstrap currently supports Windows x64. `check` runs the session and Android JVM tests, Android lint, and toolchain verification.
+
+## Build and test Phase 1
+
+```powershell
+.\scripts\gradle.ps1 :check :app:assembleDebug :app:assembleDebugAndroidTest
+.\scripts\native.ps1 Devices
+.\scripts\native.ps1 Install -Serial YOUR_DEVICE_SERIAL
+.\scripts\native.ps1 Test -Serial YOUR_DEVICE_SERIAL
+```
+
+The debug APK is `android/app/build/outputs/apk/debug/app-debug.apk` (ignored by Git). The app identity is `io.github.enan511.drivingcompanion`, minimum Android 12/API 31, target API 36. See [Phase 1 native verification](docs/testing-phase1.md) before claiming car/background behavior is tested.
 
 The original [environment check](docs/environment.md) records the pre-setup machine state.

@@ -1,6 +1,6 @@
 # Bluetooth, disconnect warnings, and session history
 
-Design update following the user's 17 October 2026 suggestions. This is a proposal and requirements record; no feature code or APK exists.
+Design following the user's 17 October 2026 suggestions. Phase 1 implements the app/notification and history paths described here. Voice commands remain F2. Native Pixel 8/car verification remains pending.
 
 ## Disconnect behaviour
 

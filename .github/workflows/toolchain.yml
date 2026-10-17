@@ -1,4 +1,4 @@
-name: Toolchain preparation
+name: Android verification
 
 on:
   push:
@@ -27,6 +27,22 @@ jobs:
       - name: Inspect native-development environment
         shell: pwsh
         run: ./scripts/doctor.ps1
-      - name: Verify build prerequisites (no app or feature tests yet)
+      - name: Test, lint, and build Phase 1
         shell: pwsh
-        run: ./scripts/gradle.ps1 check --no-daemon
+        run: ./scripts/gradle.ps1 :check :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+      - name: Upload test and lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-verification-reports
+          path: |
+            android/core/drive/build/reports/tests/test
+            android/app/build/reports/tests/testDebugUnitTest
+            android/app/build/reports/lint-results-debug.html
+          retention-days: 14

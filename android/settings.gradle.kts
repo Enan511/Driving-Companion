@@ -15,5 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Driving-Companion"
-// Add real feature/core modules when their first implementation begins.
-// There is deliberately no empty Android application module.
+include(":core:drive", ":app")

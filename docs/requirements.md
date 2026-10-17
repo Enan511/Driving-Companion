@@ -74,7 +74,11 @@ No food ordering, news, weather, conversational memory, job diaries, spending da
 - Keep automatic driving activation independent of Resume/New history selection. Proposed default: begin a new history record on a later connection and retain it if the choice is ignored; choosing Resume attaches the new connected period to the chosen prior record without restarting the service or replaying greetings. This default is a design proposal, not an explicit user selection.
 - Put session history under Home as a secondary screen, preserving the four main tabs. Store history on the phone; development Git handoffs do not synchronize private driving history.
 
-See [Bluetooth/session interaction design](bluetooth-session-design.md) for the updated diagrams and presentation rules. No feature has been implemented by this requirements update.
+See [Bluetooth/session interaction design](bluetooth-session-design.md) for diagrams and presentation rules, and [STATUS](STATUS.md) for implementation versus test evidence. Phase 1 now implements the app/notification history path; voice remains deferred.
+
+## Phase 1 traceability
+
+CAR-01 through CAR-07, HIST-01/HIST-02/HIST-04, and the app/notification part of HIST-03 have source implementations. Core rules and JVM Android storage/notification/manifest tests exist; native UI tests compile. Actual selected-car callbacks, locked/background operation, reboot recovery, notification rendering, power behavior, and companion-association discoverability still require Pixel 8/car verification. HIST-03 voice and VOICE-06 are not implemented. No feature is called production-ready on build evidence alone.
 
 ## Completion rules
 
