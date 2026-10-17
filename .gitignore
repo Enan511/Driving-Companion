@@ -1,4 +1,6 @@
 # Local configuration and credentials
+.tools/
+.local/
 .env
 .env.*
 !.env.example
