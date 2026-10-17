@@ -5,6 +5,7 @@ Updated: 17 October 2026.
 ## Active checkpoint
 
 - Active branch: `feature/bluetooth-sessions`.
+- Implemented code checkpoint: `5eaa66c`; [draft PR #1](https://github.com/Enan511/Driving-Companion/pull/1). Later handoff-only documentation commits do not change the verified app source.
 - Scope: F1 selected-car Bluetooth sessions, native disconnect countdowns, and persistent resumable history.
 - Real `app` and pure Kotlin `core/drive` modules exist; there is no dummy dashboard or Start Drive button.
 - App and native UI-test APKs build. Local verification passed: 22 core tests, 9 JVM Android tests, and zero Android lint issues. Pixel 8/car acceptance remains pending.
@@ -20,7 +21,7 @@ Updated: 17 October 2026.
 | Project-local JDK / Gradle | Downloaded and checksum-verified |
 | Android SDK and native development commands | Installed; doctor verified in PowerShell 7 and Windows PowerShell 5.1 |
 | Gradle / Android and Kotlin plugin resolution | `check` passed with project JDK/SDK |
-| GitHub workflow | Tooling baseline passed; updated app verification will run after feature push |
+| GitHub workflow | Fresh Windows app tests/lint/both APK builds passed for `5eaa66c`; debug APK and reports uploaded |
 | CAR-01 through CAR-07 and local session history | Implemented; JVM verification and APK builds; Pixel 8/car acceptance pending |
 | Optional voice Resume/New commands | Specified; speech-recognition/background eligibility not verified |
 | Greetings, places, Waze, arrivals, speed, Qwen | Not started |
@@ -46,6 +47,7 @@ Updated: 17 October 2026.
 - Final verification command: `scripts/gradle.ps1 :check :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon` passed. JUnit XML reports 31 total tests, zero failures/errors/skips; lint XML reports zero errors/warnings.
 - `apksigner verify --verbose` passed (APK signature scheme v2); `aapt dump badging` verifies application identity, launcher, minimum API 31 and target API 36. This is packaging verification, not an install test.
 - Six native Compose tests are compiled into the UI-test APK; no emulator/Pixel 8 execution has been performed.
+- [Phase 1 fresh Windows CI](https://github.com/Enan511/Driving-Companion/actions/runs/39069273077) passed: bootstrap, doctor, wrapper validation, tests, lint, and both APK builds. The run publishes the debug APK and reports as 14-day artifacts; rebuild from Git after they expire.
 - APKs, private history, device IDs, signing keys, tools, and caches remain outside Git.
 
 The system's original Java configuration was not changed. The SDK manager's newer-XML warning is documented in `docs/environment.md`; required SDK files and plugin configuration were verified successfully. ADB/Java processes required elevated tool execution in the Codex sandbox; ordinary Windows shell checks also passed outside that sandbox.
