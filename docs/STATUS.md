@@ -18,7 +18,7 @@ Updated: 17 October 2026.
 | Project-local JDK / Gradle | Downloaded and checksum-verified |
 | Android SDK and native development commands | Installed; doctor verified in PowerShell 7 and Windows PowerShell 5.1 |
 | Gradle / Android and Kotlin plugin resolution | `check` passed with project JDK/SDK |
-| GitHub toolchain workflow | Ready to run after tooling checkpoint push; fresh-run result pending |
+| GitHub toolchain workflow | Passed on a fresh Windows runner for tooling commit `478a82b` |
 | CAR-01 through CAR-05 (first functional increment) | Not started |
 | Greetings, places, Waze, arrivals, speed, Qwen | Not started |
 | Pixel 8 / car verification | Not performed |
@@ -30,6 +30,7 @@ Updated: 17 October 2026.
 - `scripts/gradle.ps1 check --no-daemon`: passed with JDK 21 and Android platform 36/build tools 35.0.0. This is prerequisite verification, not application compilation or feature tests.
 - `scripts/native.ps1 Devices`: ADB ran; no connected phone or emulator was listed.
 - Specialist review inspected actual scripts/configuration/handoff. Unicode SDK paths and Windows execution-policy setup findings were corrected; focused re-review found no remaining actionable blocker.
+- [Fresh Windows GitHub Actions run](https://github.com/Enan511/Driving-Companion/actions/runs/39066633312): bootstrap, doctor, wrapper validation, and Gradle check all passed in a clean checkout. This demonstrates fresh-machine setup, not phone or application functionality.
 - No application or backend was implemented, built, installed, or device-tested.
 
 The system's original Java configuration was not changed. The SDK manager's newer-XML warning is documented in `docs/environment.md`; required SDK files and plugin configuration were verified successfully. ADB/Java processes required elevated tool execution in the Codex sandbox; ordinary Windows shell checks also passed outside that sandbox.
