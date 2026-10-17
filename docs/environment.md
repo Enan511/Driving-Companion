@@ -32,3 +32,22 @@ GitHub CLI access required elevated execution because the sandbox could not read
 ## Verification status
 
 Only environment and repository setup have been performed. No app code, build, emulator run, physical-device test, Bluetooth test, or provider integration has been performed.
+
+## Preparation update: 17 October 2026
+
+The system Java installations remain unchanged. Development scripts now use an isolated toolchain under the repository's ignored `.tools/` directory and caches/preferences under `.local/`:
+
+| Component | Prepared version |
+| --- | --- |
+| JDK / compiler | Eclipse Temurin 21.0.12.1+1 |
+| Gradle / committed wrapper | 8.13; distribution and wrapper JAR checked against published SHA-256 |
+| Android Gradle Plugin | 8.13.2, resolved successfully |
+| Kotlin / Compose compiler plugin | 2.2.21, resolved successfully |
+| SDK command-line tools | 19.0, pinned Google archive |
+| Android SDK platform | API 36, revision 2 |
+| SDK build tools | 35.0.0 |
+| Platform-tools / ADB | 37.0.1 / 1.0.41 |
+
+The newest command-line tools redirected to a new Android CLI and did not install all requested packages despite a successful exit. Preparation was corrected to use the pinned SDK manager directly and verify required package files. The pinned manager emits an SDK-XML-version warning against newer repository metadata; installation and actual file verification passed.
+
+Doctor and Gradle `check` passed with the local tools. These validate prerequisites and Gradle plugin resolution only. No application module or APK exists. Native device discovery returned an empty list, so no Pixel 8 or emulator test was performed. Android Studio and an emulator image have not been installed by preparation.

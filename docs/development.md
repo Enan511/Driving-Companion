@@ -4,6 +4,8 @@
 
 Run from the repository root in PowerShell. The folder name/location may differ between PCs.
 
+If Windows blocks local scripts with an execution-policy error, open a process-only development shell first: `powershell.exe -NoProfile -ExecutionPolicy Bypass`. This does not change the machine or user policy. Use that shell in the repository folder; an organization-enforced policy may still apply.
+
 ```powershell
 .\scripts\bootstrap.ps1 -AcceptAndroidLicenses
 .\scripts\doctor.ps1

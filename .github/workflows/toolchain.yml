@@ -1,0 +1,32 @@
+name: Toolchain preparation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-windows-toolchain:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .tools
+            .local/gradle
+          key: windows-toolchain-${{ hashFiles('tools/toolchain.json', 'android/gradle/wrapper/gradle-wrapper.properties', 'android/gradle/libs.versions.toml') }}
+      - name: Bootstrap project tools
+        shell: pwsh
+        run: ./scripts/bootstrap.ps1 -AcceptAndroidLicenses
+      - name: Inspect native-development environment
+        shell: pwsh
+        run: ./scripts/doctor.ps1
+      - name: Verify build prerequisites (no app or feature tests yet)
+        shell: pwsh
+        run: ./scripts/gradle.ps1 check --no-daemon

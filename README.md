@@ -4,7 +4,7 @@ Driving Companion (working app name: **Jarvis Drive**) is a planned native Andro
 
 ## Project status
 
-Native-development preparation is in progress. No Android application, backend, or app features have been implemented. No APK has been built, installed, or tested.
+The project-local Android development toolchain is prepared and verified. No Android application, backend, or app features have been implemented. No APK has been built, installed, or tested.
 
 The project starts from scratch; previous APKs and prototype source are excluded.
 

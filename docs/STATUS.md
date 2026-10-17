@@ -7,7 +7,7 @@ Updated: 17 October 2026.
 - Active branch: `chore/core-development-prep`.
 - Scope: project-local native-development preparation, requirements, and reproducible another-PC handoff.
 - No application code, backend code, empty app module, APK, or feature tests exist yet.
-- Current work: SDK installation and wrapper validation; final verification will be recorded before this checkpoint is pushed.
+- Preparation is locally verified. The next implementation is F1 below; there is no separate empty-app milestone.
 
 ## Requirements progress
 
@@ -16,11 +16,23 @@ Updated: 17 October 2026.
 | Public GitHub repository | Created and connected |
 | Requirements and functional implementation order | Documented |
 | Project-local JDK / Gradle | Downloaded and checksum-verified |
-| Android SDK and native development commands | Installation/verification in progress |
-| GitHub toolchain workflow | Written; not yet run |
+| Android SDK and native development commands | Installed; doctor verified in PowerShell 7 and Windows PowerShell 5.1 |
+| Gradle / Android and Kotlin plugin resolution | `check` passed with project JDK/SDK |
+| GitHub toolchain workflow | Ready to run after tooling checkpoint push; fresh-run result pending |
 | CAR-01 through CAR-05 (first functional increment) | Not started |
 | Greetings, places, Waze, arrivals, speed, Qwen | Not started |
 | Pixel 8 / car verification | Not performed |
+
+## Verified commands and review
+
+- `scripts/bootstrap.ps1 -AcceptAndroidLicenses`: installed project-local tools and SDK packages. Repeated successfully under Windows PowerShell 5.1 after fixing its native-stderr warning handling.
+- `scripts/doctor.ps1`: passed under PowerShell 7.6 and Windows PowerShell 5.1; checks required files, script syntax, exact wrapper properties, and published wrapper-JAR SHA-256.
+- `scripts/gradle.ps1 check --no-daemon`: passed with JDK 21 and Android platform 36/build tools 35.0.0. This is prerequisite verification, not application compilation or feature tests.
+- `scripts/native.ps1 Devices`: ADB ran; no connected phone or emulator was listed.
+- Specialist review inspected actual scripts/configuration/handoff. Unicode SDK paths and Windows execution-policy setup findings were corrected; focused re-review found no remaining actionable blocker.
+- No application or backend was implemented, built, installed, or device-tested.
+
+The system's original Java configuration was not changed. The SDK manager's newer-XML warning is documented in `docs/environment.md`; required SDK files and plugin configuration were verified successfully. ADB/Java processes required elevated tool execution in the Codex sandbox; ordinary Windows shell checks also passed outside that sandbox.
 
 ## Next action after preparation
 
